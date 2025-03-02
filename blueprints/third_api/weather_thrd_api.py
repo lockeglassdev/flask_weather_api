@@ -3,7 +3,7 @@ from typing import Tuple,List
 from .models import WeatherDay
 
 # WeatherAPI context
-WEATHER_API_KEY = "819712d29f4b4071bb702425252702"
+WEATHER_API_KEY = "somekey"
 WEATHER_URL_BASE = "https://api.weatherapi.com/v1"
 CURRENT_DAY_TOPIC = "/current.json"
 FORECAST_DAYS_TOPIC = "/forecast.json"
