@@ -77,4 +77,4 @@ class WeatherDay:
         return True if self.metrics["daily_will_it_rain"] > 0 else False
     
     def is_snow_day(self):
-        return True if self.metrics["dialy_will_it_snow"] > 0 else False
+        return True if self.metrics["daily_will_it_snow"] > 0 else False

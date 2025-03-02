@@ -1,6 +1,6 @@
 import requests
 from typing import Tuple,List
-from models import WeatherDay
+from .models import WeatherDay
 
 # WeatherAPI context
 WEATHER_API_KEY = "819712d29f4b4071bb702425252702"
