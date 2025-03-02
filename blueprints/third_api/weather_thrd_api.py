@@ -1,12 +1,14 @@
 import requests
 from typing import Tuple,List
+from models import WeatherDay
 
+# WeatherAPI context
 WEATHER_API_KEY = "819712d29f4b4071bb702425252702"
 WEATHER_URL_BASE = "https://api.weatherapi.com/v1"
 CURRENT_DAY_TOPIC = "/current.json"
 FORECAST_DAYS_TOPIC = "/forecast.json"
 
-def current_weather_api(location:str,lang:str,days:int=1) -> dict | None:
+def forecast_weather_api(location:str,lang:str,days:int=1) -> dict | None:
     """
     This function provides a conection to WeatherAPI, for get
     the forecast weather in the next days.
@@ -22,7 +24,7 @@ def current_weather_api(location:str,lang:str,days:int=1) -> dict | None:
     """
     result = None
 
-    # The base query params for WeatherAPI
+    # The base query params for a WeatherAPI request
     query_data = {
         "q":location,
         "lang":lang,
@@ -38,20 +40,26 @@ def current_weather_api(location:str,lang:str,days:int=1) -> dict | None:
     
     return None
 
-def forecast_exctract_data(data:dict) -> Tuple[dict,List[dict]]:
+def forecast_exctract_data(data:dict) -> List[WeatherDay]:
     """
     This function extracts only the required data to make
     a JSON response from the app clients.
 
     :param data: A JSON data response as a dict
     :type data: dict
-    :return: The location info and the forecast of next days.
-    :rtype: Tuple[dict,List[dict]]
+    :return: A WatherDay object collection.
+    :rtype: List[WeatherDay]
     """
     location_info = data["location"]
     forecast = data["forecast"]["forecastday"]
 
-    return location_info,forecast
+    day_list = []
+
+    for day in forecast:
+        new_day = WeatherDay(location_info,day["day"])
+        day_list.append(new_day)
+
+    return day_list
 
 if __name__ == "__main__":
     pass
