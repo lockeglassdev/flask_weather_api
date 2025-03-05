@@ -1,3 +1,8 @@
+"""
+This module contains all the logic that handles the 
+endpoint of user requests about the weather.
+"""
+
 from flask import Blueprint, request, jsonify
 from .third_api.weather_thrd_api import forecast_exctract_data, forecast_weather_api
 
@@ -13,9 +18,12 @@ def weather_endpoint(country:str):
     wind_metric = query["wind_m"]
     precp_metric = query["percp_m"]
 
+    # Extract the request data to handling it
     result = forecast_weather_api(country,language,days)
     days_obj = forecast_exctract_data(result)
 
+    # Specifies the fields to convert to
+    # JSON for sending it through a dict.
     format_objects = []
     for day in days_obj:
         new_fday = {
@@ -28,6 +36,7 @@ def weather_endpoint(country:str):
         }
         format_objects.append(new_fday)
 
+    # The full response for the user
     response = {
         "country_data":{
             "country":days_obj[0].country,
@@ -37,4 +46,5 @@ def weather_endpoint(country:str):
         "weath_forecast":format_objects
     }
 
+    # Convert into JSON/HTTP response
     return jsonify(response)

@@ -1,5 +1,10 @@
+"""
+This module contains all the logic to make requests to 
+the weather API and manage the information contained 
+therein.
+"""
 import requests
-from typing import Tuple,List
+from typing import List
 from .models import WeatherDay
 
 # WeatherAPI context
@@ -24,15 +29,19 @@ def forecast_weather_api(location:str,lang:str,days:int=1) -> dict | None:
     """
     result = None
 
-    # The base query params for a WeatherAPI request
+    # The base obligatory params for a WeatherAPI request
     query_data = {
         "q":location,
         "lang":lang,
         "key":WEATHER_API_KEY
     }
 
+    # Making the URL
     query = WEATHER_URL_BASE + FORECAST_DAYS_TOPIC
+
+    # Add a user expected days
     query_data["days"] = days
+
     result = requests.get(query,params=query_data)
 
     if result.status_code == 200:
@@ -50,9 +59,11 @@ def forecast_exctract_data(data:dict) -> List[WeatherDay]:
     :return: A WatherDay object collection.
     :rtype: List[WeatherDay]
     """
+    # Discrimine the location and forecast data
     location_info = data["location"]
     forecast = data["forecast"]["forecastday"]
 
+    # This contains all WeatherDay objects
     day_list = []
 
     for day in forecast:
